@@ -3,638 +3,757 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Avaliação de Fornecedor — RH Bemol</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+<title>Avaliação de Fornecedores — Bemol S/A</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  :root {
-    --purple:    #534AB7;
-    --purple-lt: #EEEDFE;
-    --purple-md: #AFA9EC;
-    --green:     #1D9E75;
-    --green-lt:  #E1F5EE;
-    --amber:     #EF9F27;
-    --amber-lt:  #FAEEDA;
-    --red:       #E24B4A;
-    --red-lt:    #FCEBEB;
-    --gray-0:    #FFFFFF;
-    --gray-1:    #F7F6F4;
-    --gray-2:    #EFEDE9;
-    --gray-3:    #D3D1C7;
-    --gray-6:    #5F5E5A;
-    --gray-9:    #1C1C1A;
-    --radius:    10px;
-    --shadow:    0 1px 3px rgba(0,0,0,.07), 0 4px 16px rgba(0,0,0,.05);
-  }
+:root {
+  --navy:      #0B1E3D;
+  --navy-mid:  #122850;
+  --navy-lt:   #1A3766;
+  --sky:       #2B7FD4;
+  --sky-lt:    #D6EAFF;
+  --gold:      #F5A623;
+  --gold-lt:   #FEF3DC;
+  --white:     #FFFFFF;
+  --gray-1:    #F4F6FA;
+  --gray-2:    #E8ECF4;
+  --gray-3:    #C4CDD E;
+  --gray-6:    #6B7A99;
+  --gray-9:    #1A2340;
+  --green:     #1D9E75;
+  --green-lt:  #E1F5EE;
+  --amber:     #EF9F27;
+  --red:       #E24B4A;
+  --red-lt:    #FCEBEB;
+  --radius:    10px;
+  --shadow:    0 2px 8px rgba(11,30,61,.10), 0 8px 32px rgba(11,30,61,.08);
+}
 
-  html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; }
 
-  body {
-    font-family: 'Inter', sans-serif;
-    background: var(--gray-1);
-    color: var(--gray-9);
-    min-height: 100vh;
-    padding: 2rem 1rem 4rem;
-  }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--navy);
+  color: var(--gray-9);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
 
-  /* ── HEADER ── */
-  .header {
-    max-width: 640px;
-    margin: 0 auto 2rem;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .logo-mark {
-    width: 40px; height: 40px;
-    background: var(--purple);
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-  .logo-mark svg { width: 22px; height: 22px; fill: white; }
-  .header-text h1 {
-    font-family: 'Sora', sans-serif;
-    font-size: 15px; font-weight: 700;
-    color: var(--gray-9); letter-spacing: -0.02em;
-  }
-  .header-text p { font-size: 12px; color: var(--gray-6); margin-top: 1px; }
+/* ── SKY BACKGROUND ── */
+.sky-bg {
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 0%, #1A3F7A 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 10%, #0D2B5E 0%, transparent 50%),
+    linear-gradient(180deg, #071529 0%, #0B1E3D 40%, #122850 100%);
+  z-index: 0;
+}
 
-  /* ── CARD ── */
-  .card {
-    background: var(--gray-0);
-    border-radius: 16px;
-    box-shadow: var(--shadow);
-    max-width: 640px;
-    margin: 0 auto;
-    overflow: hidden;
-  }
+/* Stars */
+.stars {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  animation: twinkle var(--d, 3s) ease-in-out infinite alternate;
+}
+@keyframes twinkle { from { opacity: .2; } to { opacity: .9; } }
 
-  /* ── PROGRESS ── */
-  .progress-wrap { padding: 1.25rem 1.75rem 0; }
-  .progress-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-  .progress-label { font-size: 12px; color: var(--gray-6); }
-  .progress-pct   { font-size: 12px; font-weight: 500; color: var(--purple); }
-  .progress-track { height: 4px; background: var(--gray-2); border-radius: 2px; }
-  .progress-fill  { height: 4px; background: var(--purple); border-radius: 2px; width: 14%; transition: width .35s ease; }
+/* Clouds */
+.clouds {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+}
+.cloud {
+  position: absolute;
+  border-radius: 50px;
+  background: rgba(255,255,255,0.04);
+  filter: blur(18px);
+}
 
-  /* ── STEPS ── */
-  .steps-wrap { padding: 1.5rem 1.75rem 1.75rem; }
-  .step { display: none; animation: fadeIn .2s ease; }
-  .step.active { display: block; }
-  @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+/* Plane */
+.plane-wrap {
+  position: fixed;
+  top: 60px;
+  left: -120px;
+  z-index: 3;
+  animation: flyAcross 18s linear infinite;
+  pointer-events: none;
+}
+@keyframes flyAcross {
+  0%   { left: -140px; top: 60px; opacity: 0; }
+  5%   { opacity: 1; }
+  95%  { opacity: 1; }
+  100% { left: calc(100vw + 140px); top: 20px; opacity: 0; }
+}
+.plane-trail {
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 200px;
+  height: 2px;
+  background: linear-gradient(to left, rgba(255,255,255,0.5), transparent);
+}
 
-  .step-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: .08em; color: var(--purple); text-transform: uppercase; margin-bottom: .4rem; }
-  .step-title   { font-family: 'Sora', sans-serif; font-size: 18px; font-weight: 700; color: var(--gray-9); letter-spacing: -.02em; line-height: 1.3; margin-bottom: .3rem; }
-  .step-hint    { font-size: 13px; color: var(--gray-6); margin-bottom: 1.25rem; line-height: 1.6; }
+/* ── MAIN LAYOUT ── */
+.page {
+  position: relative;
+  z-index: 10;
+  min-height: 100vh;
+  padding: 2rem 1rem 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-  /* inputs */
-  .field { margin-bottom: 1rem; }
-  .field label { display: block; font-size: 12px; font-weight: 500; color: var(--gray-6); margin-bottom: 5px; }
-  .field input, .field select, .field textarea {
-    width: 100%;
-    padding: 10px 13px;
-    border: 1px solid var(--gray-3);
-    border-radius: var(--radius);
-    font-size: 14px; font-family: 'Inter', sans-serif;
-    color: var(--gray-9);
-    background: var(--gray-0);
-    transition: border-color .15s;
-    outline: none;
-  }
-  .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--purple); box-shadow: 0 0 0 3px rgba(83,74,183,.12); }
-  .field textarea { resize: vertical; min-height: 80px; }
+/* ── HEADER ── */
+.header {
+  width: 100%;
+  max-width: 640px;
+  margin-bottom: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+}
 
-  /* NPS */
-  .nps-grid { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: .5rem; }
-  .nps-btn {
-    width: 50px; height: 46px;
-    border: 1px solid var(--gray-3);
-    border-radius: var(--radius);
-    background: var(--gray-0);
-    font-size: 14px; font-weight: 500; color: var(--gray-6);
-    cursor: pointer; transition: all .12s;
-  }
-  .nps-btn:hover { background: var(--purple-lt); border-color: var(--purple-md); color: var(--purple); }
-  .nps-btn.sel   { background: var(--purple); border-color: var(--purple); color: white; }
-  .nps-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--gray-6); margin-bottom: 1.25rem; }
+.logo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 40px;
+  padding: 6px 16px 6px 8px;
+  backdrop-filter: blur(8px);
+}
+.logo-icon {
+  width: 32px; height: 32px;
+  background: var(--sky);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.logo-icon svg { width: 18px; height: 18px; fill: white; }
+.logo-name { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.9); letter-spacing: .02em; }
+.logo-dept { font-size: 11px; color: rgba(255,255,255,0.5); }
 
-  /* Stars */
-  .stars { display: flex; gap: 6px; margin-bottom: 1.25rem; }
-  .star { font-size: 30px; cursor: pointer; color: var(--gray-3); transition: color .1s; line-height: 1; background: none; border: none; padding: 0; }
-  .star.lit { color: var(--amber); }
+.header-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(22px, 5vw, 30px);
+  font-weight: 800;
+  color: white;
+  letter-spacing: -.03em;
+  line-height: 1.15;
+}
+.header-title span { color: var(--gold); }
+.header-sub { font-size: 13px; color: rgba(255,255,255,0.5); }
 
-  /* Radio cards */
-  .radio-list { display: flex; flex-direction: column; gap: 7px; margin-bottom: 1.25rem; }
-  .radio-card {
-    display: flex; align-items: center; gap: 12px;
-    padding: 11px 14px;
-    border: 1px solid var(--gray-3);
-    border-radius: var(--radius);
-    cursor: pointer; transition: background .12s, border-color .12s;
-  }
-  .radio-card:hover { background: var(--gray-1); border-color: var(--gray-9); }
-  .radio-card.sel   { background: var(--purple-lt); border-color: var(--purple); }
-  .radio-card input { display: none; }
-  .rdot {
-    width: 18px; height: 18px; border-radius: 50%;
-    border: 1.5px solid var(--gray-3); flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-    transition: all .12s;
-  }
-  .radio-card.sel .rdot { border-color: var(--purple); background: var(--purple); }
-  .radio-card.sel .rdot::after { content:''; width:6px; height:6px; border-radius:50%; background:white; }
-  .radio-card span { font-size: 14px; color: var(--gray-9); }
+/* ── CARD ── */
+.card {
+  background: var(--white);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  width: 100%;
+  max-width: 640px;
+  overflow: hidden;
+}
 
-  /* Divider */
-  .divider { border: none; border-top: 1px solid var(--gray-2); margin: 1.25rem 0; }
-  .sub-label { font-size: 13px; font-weight: 500; color: var(--gray-9); margin-bottom: .75rem; }
+/* ── CARD HEADER BAND ── */
+.card-band {
+  background: linear-gradient(135deg, var(--navy-mid) 0%, var(--navy-lt) 100%);
+  padding: 1.25rem 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.band-left { flex: 1; }
+.band-step { font-size: 11px; font-weight: 600; color: var(--gold); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 3px; }
+.band-title { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 16px; font-weight: 700; color: white; letter-spacing: -.01em; }
+.band-plane svg { width: 36px; height: 36px; opacity: .7; }
 
-  /* Nav */
-  .nav { display: flex; align-items: center; gap: 10px; margin-top: 1.5rem; }
-  .btn-primary {
-    padding: 11px 24px; border-radius: var(--radius);
-    background: var(--purple); color: white;
-    border: none; font-size: 14px; font-weight: 500;
-    font-family: 'Inter', sans-serif;
-    cursor: pointer; transition: opacity .12s;
-  }
-  .btn-primary:hover { opacity: .88; }
-  .btn-primary:disabled { opacity: .45; cursor: not-allowed; }
-  .btn-ghost {
-    padding: 11px 18px; border-radius: var(--radius);
-    background: transparent; color: var(--gray-6);
-    border: 1px solid var(--gray-3); font-size: 14px;
-    font-family: 'Inter', sans-serif;
-    cursor: pointer; transition: background .12s;
-  }
-  .btn-ghost:hover { background: var(--gray-1); }
-  .step-counter { margin-left: auto; font-size: 12px; color: var(--gray-6); }
+/* ── PROGRESS ── */
+.progress-wrap { padding: 0 1.75rem; margin-top: -1px; }
+.progress-track { height: 3px; background: var(--gray-2); }
+.progress-fill  { height: 3px; background: var(--gold); transition: width .35s ease; }
+.progress-meta  { display: flex; justify-content: space-between; padding: 6px 0 0; }
+.progress-label { font-size: 11px; color: var(--gray-6); }
+.progress-pct   { font-size: 11px; font-weight: 600; color: var(--sky); }
 
-  /* ── RESULTADO ── */
-  .result-header {
-    background: var(--purple);
-    padding: 2rem 1.75rem 1.5rem;
-    text-align: center;
-  }
-  .result-header h2 { font-family:'Sora',sans-serif; font-size:15px; font-weight:700; color:rgba(255,255,255,.7); margin-bottom:1rem; letter-spacing:.03em; }
-  .nps-circle {
-    width: 90px; height: 90px; border-radius: 50%;
-    background: rgba(255,255,255,.15);
-    border: 2px solid rgba(255,255,255,.3);
-    display: flex; flex-direction:column;
-    align-items:center; justify-content:center;
-    margin: 0 auto 1rem;
-  }
-  .nps-circle .big  { font-family:'Sora',sans-serif; font-size:32px; font-weight:700; color:white; line-height:1; }
-  .nps-circle .tiny { font-size:10px; color:rgba(255,255,255,.6); letter-spacing:.06em; margin-top:2px; }
-  .zone-pill {
-    display: inline-block; padding: 4px 16px; border-radius: 20px;
-    font-size: 12px; font-weight: 600; letter-spacing:.04em;
-    background: rgba(255,255,255,.2); color:white;
-    margin-bottom: .5rem;
-  }
-  .result-fornecedor { font-size:13px; color:rgba(255,255,255,.65); }
+/* ── STEPS ── */
+.steps-wrap { padding: 1.5rem 1.75rem 1.75rem; }
+.step { display: none; animation: fadeUp .2s ease; }
+.step.active { display: block; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
 
-  .result-body { padding: 1.5rem 1.75rem; }
-  .dim-section-title { font-size:13px; font-weight:600; color:var(--gray-9); margin-bottom:1rem; }
-  .dim-row { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
-  .dim-name { font-size:12px; color:var(--gray-6); width:170px; flex-shrink:0; line-height:1.3; }
-  .dim-track { flex:1; height:6px; background:var(--gray-2); border-radius:3px; }
-  .dim-bar   { height:6px; border-radius:3px; transition: width .6s ease; }
-  .dim-val   { font-size:12px; font-weight:600; width:32px; text-align:right; }
+.step-eyebrow { font-size: 11px; font-weight: 600; color: var(--sky); text-transform: uppercase; letter-spacing: .08em; margin-bottom: .35rem; }
+.step-title   { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 18px; font-weight: 700; color: var(--gray-9); letter-spacing: -.02em; line-height: 1.3; margin-bottom: .3rem; }
+.step-hint    { font-size: 13px; color: var(--gray-6); margin-bottom: 1.25rem; line-height: 1.6; }
 
-  .comments-section { margin-top:1.25rem; border-top:1px solid var(--gray-2); padding-top:1.25rem; display:none; }
-  .comment-block { margin-bottom:1rem; }
-  .comment-block .clabel { font-size:12px; font-weight:600; color:var(--gray-6); margin-bottom:4px; }
-  .comment-block .ctext  { font-size:13px; color:var(--gray-9); line-height:1.6; }
+/* Inputs */
+.field { margin-bottom: 1rem; }
+.field label { display: block; font-size: 12px; font-weight: 500; color: var(--gray-6); margin-bottom: 5px; }
+.field input, .field select, .field textarea {
+  width: 100%; padding: 10px 13px;
+  border: 1.5px solid var(--gray-2);
+  border-radius: var(--radius);
+  font-size: 14px; font-family: 'Inter', sans-serif;
+  color: var(--gray-9); background: var(--gray-1);
+  transition: border-color .15s, background .15s; outline: none;
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  border-color: var(--sky); background: white;
+  box-shadow: 0 0 0 3px rgba(43,127,212,.12);
+}
+.field textarea { resize: vertical; min-height: 80px; }
 
-  /* SUCCESS */
-  .success-banner {
-    background: var(--green-lt);
-    border: 1px solid #9FE1CB;
-    border-radius: var(--radius);
-    padding: 12px 16px;
-    display: flex; align-items:center; gap:10px;
-    margin-bottom:1.25rem; display:none;
-  }
-  .success-banner svg { width:18px;height:18px;flex-shrink:0;fill:var(--green); }
-  .success-banner span { font-size:13px; color:#085041; }
+/* NPS */
+.nps-grid { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: .5rem; }
+.nps-btn {
+  width: 50px; height: 46px;
+  border: 1.5px solid var(--gray-2);
+  border-radius: var(--radius);
+  background: var(--gray-1);
+  font-size: 14px; font-weight: 500; color: var(--gray-6);
+  cursor: pointer; transition: all .12s;
+}
+.nps-btn:hover { background: var(--sky-lt); border-color: var(--sky); color: var(--sky); }
+.nps-btn.sel   { background: var(--navy); border-color: var(--navy); color: white; }
+.nps-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--gray-6); margin-bottom: 1.25rem; }
 
-  /* SPINNER */
-  .spinner { display:none; width:18px;height:18px;border:2px solid rgba(255,255,255,.4);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite;margin-left:6px;vertical-align:middle; }
-  @keyframes spin { to { transform:rotate(360deg); } }
+/* Stars */
+.stars-row { display: flex; gap: 6px; margin-bottom: 1.25rem; }
+.star-btn { font-size: 30px; cursor: pointer; color: var(--gray-2); transition: color .1s; line-height: 1; background: none; border: none; padding: 0; }
+.star-btn.lit { color: var(--gold); }
+
+/* Radio cards */
+.radio-list { display: flex; flex-direction: column; gap: 7px; margin-bottom: 1.25rem; }
+.radio-card {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 14px;
+  border: 1.5px solid var(--gray-2);
+  border-radius: var(--radius);
+  cursor: pointer; background: var(--gray-1);
+  transition: background .12s, border-color .12s;
+}
+.radio-card:hover { background: var(--sky-lt); border-color: var(--sky); }
+.radio-card.sel   { background: #EAF4FF; border-color: var(--sky); }
+.radio-card input { display: none; }
+.rdot {
+  width: 18px; height: 18px; border-radius: 50%;
+  border: 1.5px solid var(--gray-2); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; transition: all .12s;
+}
+.radio-card.sel .rdot { border-color: var(--sky); background: var(--sky); }
+.radio-card.sel .rdot::after { content:''; width:6px; height:6px; border-radius:50%; background:white; }
+.radio-card span { font-size: 14px; color: var(--gray-9); }
+
+.divider { border: none; border-top: 1.5px solid var(--gray-2); margin: 1.25rem 0; }
+.sub-label { font-size: 13px; font-weight: 500; color: var(--gray-9); margin-bottom: .75rem; }
+
+/* Nav */
+.nav { display: flex; align-items: center; gap: 10px; margin-top: 1.5rem; }
+.btn-primary {
+  padding: 11px 24px; border-radius: var(--radius);
+  background: linear-gradient(135deg, var(--sky) 0%, #1A5FAA 100%);
+  color: white; border: none;
+  font-size: 14px; font-weight: 600; font-family: 'Inter', sans-serif;
+  cursor: pointer; transition: opacity .12s; letter-spacing: .01em;
+  box-shadow: 0 2px 8px rgba(43,127,212,.35);
+}
+.btn-primary:hover { opacity: .88; }
+.btn-ghost {
+  padding: 11px 18px; border-radius: var(--radius);
+  background: transparent; color: var(--gray-6);
+  border: 1.5px solid var(--gray-2); font-size: 14px;
+  font-family: 'Inter', sans-serif; cursor: pointer; transition: background .12s;
+}
+.btn-ghost:hover { background: var(--gray-1); }
+.step-counter { margin-left: auto; font-size: 12px; color: var(--gray-6); }
+
+/* ── RESULTADO ── */
+.result-band {
+  padding: 2rem 1.75rem 1.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.result-band::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-lt) 100%);
+  z-index: 0;
+}
+.result-band::after {
+  content: '';
+  position: absolute;
+  right: -20px; bottom: -20px;
+  width: 160px; height: 160px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='rgba(255,255,255,0.05)'%3E%3Cpath d='M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z'/%3E%3C/svg%3E") center/contain no-repeat;
+  z-index: 1;
+}
+.result-band > * { position: relative; z-index: 2; }
+.result-band h2 { font-size: 11px; font-weight: 600; color: var(--gold); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 1rem; }
+.nps-circle {
+  width: 88px; height: 88px; border-radius: 50%;
+  background: rgba(255,255,255,.12);
+  border: 2px solid rgba(255,255,255,.25);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  margin: 0 auto 1rem;
+}
+.nps-circle .big  { font-family:'Plus Jakarta Sans',sans-serif; font-size:32px; font-weight:800; color:white; line-height:1; }
+.nps-circle .tiny { font-size:10px; color:rgba(255,255,255,.55); letter-spacing:.06em; margin-top:2px; }
+.zone-pill { display:inline-block; padding:4px 16px; border-radius:20px; font-size:12px; font-weight:600; background:rgba(255,255,255,.15); color:white; margin-bottom:.5rem; letter-spacing:.04em; }
+.result-fornecedor { font-size:13px; color:rgba(255,255,255,.55); }
+
+.result-body { padding: 1.5rem 1.75rem; }
+.dim-title { font-size:13px; font-weight:600; color:var(--gray-9); margin-bottom:1rem; }
+.dim-row   { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+.dim-name  { font-size:12px; color:var(--gray-6); width:170px; flex-shrink:0; line-height:1.3; }
+.dim-track { flex:1; height:6px; background:var(--gray-2); border-radius:3px; }
+.dim-bar   { height:6px; border-radius:3px; transition:width .6s ease; }
+.dim-val   { font-size:12px; font-weight:600; width:32px; text-align:right; }
+
+.comments-section { margin-top:1.25rem; border-top:1.5px solid var(--gray-2); padding-top:1.25rem; display:none; }
+.clabel { font-size:12px; font-weight:600; color:var(--gray-6); margin-bottom:4px; }
+.ctext  { font-size:13px; color:var(--gray-9); line-height:1.6; margin-bottom:1rem; }
+
+.success-banner {
+  background: var(--green-lt); border:1px solid #9FE1CB; border-radius:var(--radius);
+  padding:12px 16px; display:none; align-items:center; gap:10px; margin-bottom:1.25rem;
+}
+.success-banner svg { width:18px;height:18px;flex-shrink:0;fill:var(--green); }
+.success-banner span { font-size:13px; color:#085041; }
+
+.spinner { display:none; width:16px;height:16px;border:2px solid rgba(255,255,255,.4);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite;margin-left:6px;vertical-align:middle; }
+@keyframes spin { to { transform:rotate(360deg); } }
+
+/* Footer */
+.footer { margin-top: 1.5rem; text-align: center; font-size: 11px; color: rgba(255,255,255,.25); }
 </style>
 </head>
 <body>
 
-<div class="header">
-  <div class="logo-mark">
-    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
-  </div>
-  <div class="header-text">
-    <h1>Gestão de Fornecedores</h1>
-    <p>RH · Viagens &amp; Eventos Corporativos</p>
-  </div>
+<!-- Background -->
+<div class="sky-bg"></div>
+<div class="stars" id="stars-bg"></div>
+<div class="clouds">
+  <div class="cloud" style="width:300px;height:80px;top:15%;left:5%"></div>
+  <div class="cloud" style="width:200px;height:60px;top:30%;right:10%"></div>
+  <div class="cloud" style="width:250px;height:70px;top:60%;left:20%"></div>
 </div>
 
-<div class="card">
+<!-- Avião animado -->
+<div class="plane-wrap">
+  <div class="plane-trail"></div>
+  <svg width="56" height="56" viewBox="0 0 24 24" fill="rgba(255,255,255,0.85)" xmlns="http://www.w3.org/2000/svg">
+    <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+  </svg>
+</div>
 
-  <!-- PROGRESS -->
-  <div class="progress-wrap">
-    <div class="progress-meta">
-      <span class="progress-label" id="prog-label">Identificação</span>
-      <span class="progress-pct" id="prog-pct">14%</span>
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo-badge">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
+      </div>
+      <div>
+        <div class="logo-name">Bemol S/A</div>
+        <div class="logo-dept">RH · Viagens &amp; Eventos Corporativos</div>
+      </div>
     </div>
-    <div class="progress-track"><div class="progress-fill" id="prog-fill"></div></div>
+    <div class="header-title">Avaliação de <span>Fornecedores</span></div>
+    <div class="header-sub">Sua avaliação orienta melhores decisões de contratação</div>
   </div>
 
-  <div class="steps-wrap">
+  <!-- Card -->
+  <div class="card">
 
-    <!-- STEP 0 — Identificação -->
-    <div class="step active" id="s0">
-      <div class="step-eyebrow">Etapa 1 de 7</div>
-      <div class="step-title">Qual fornecedor você está avaliando?</div>
-      <div class="step-hint">Preencha o nome e selecione a categoria de serviço.</div>
-      <div class="field"><label>Nome do fornecedor *</label><input type="text" id="f-nome" placeholder="Ex: Hotel Tropical Manaus"></div>
-      <div class="field"><label>Categoria *</label>
-        <select id="f-cat">
-          <option value="">Selecione…</option>
-          <option>Hotéis e hospedagem</option>
-          <option>Companhias aéreas</option>
-          <option>Locadoras de veículos</option>
-          <option>Agência de viagens (TMC)</option>
-          <option>Buffet / alimentação</option>
-          <option>Espaço para eventos</option>
-          <option>Transporte terrestre</option>
-          <option>Tecnologia / sistemas</option>
-          <option>Outro</option>
-        </select>
+    <div class="card-band" id="card-band">
+      <div class="band-left">
+        <div class="band-step" id="band-step">Etapa 1 de 7</div>
+        <div class="band-title" id="band-title">Identificação do fornecedor</div>
       </div>
-      <div class="field"><label>Seu nome / área (opcional)</label><input type="text" id="f-avaliador" placeholder="Ex: Micheli — RH Viagens"></div>
-      <div class="nav">
-        <button class="btn-primary" onclick="next(0)">Próximo →</button>
-        <span class="step-counter">1 / 7</span>
+      <div class="band-plane">
+        <svg viewBox="0 0 24 24" fill="rgba(255,255,255,0.6)" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+        </svg>
       </div>
     </div>
 
-    <!-- STEP 1 — NPS -->
-    <div class="step" id="s1">
-      <div class="step-eyebrow">Etapa 2 de 7</div>
-      <div class="step-title">Qual a chance de você recomendar este fornecedor internamente?</div>
-      <div class="step-hint">0 = definitivamente não recomendaria &nbsp;·&nbsp; 10 = recomendaria com certeza</div>
-      <div class="nps-grid" id="nps-btns"></div>
-      <div class="nps-labels"><span>Não recomendaria</span><span>Recomendaria com certeza</span></div>
-      <div class="nav">
-        <button class="btn-ghost" onclick="prev(1)">← Voltar</button>
-        <button class="btn-primary" onclick="next(1)">Próximo →</button>
-        <span class="step-counter">2 / 7</span>
+    <div class="progress-wrap">
+      <div class="progress-track"><div class="progress-fill" id="prog-fill" style="width:14%"></div></div>
+      <div class="progress-meta">
+        <span class="progress-label" id="prog-label">Identificação</span>
+        <span class="progress-pct" id="prog-pct">14%</span>
       </div>
     </div>
 
-    <!-- STEP 2 — Qualidade -->
-    <div class="step" id="s2">
-      <div class="step-eyebrow">Etapa 3 de 7 · Qualidade e entrega</div>
-      <div class="step-title">Como foi a qualidade do que foi entregue?</div>
-      <div class="step-hint">Avalie se o fornecedor cumpriu o que foi contratado.</div>
-      <div class="sub-label">Nota geral de qualidade</div>
-      <div class="stars" id="st-qualidade"></div>
-      <hr class="divider">
-      <div class="sub-label">O fornecedor cumpriu os prazos acordados?</div>
-      <div class="radio-list" id="rl-prazo">
-        <label class="radio-card"><input type="radio" name="prazo" value="5"><div class="rdot"></div><span>Sempre cumpriu os prazos</span></label>
-        <label class="radio-card"><input type="radio" name="prazo" value="3"><div class="rdot"></div><span>Cumpriu na maioria das vezes</span></label>
-        <label class="radio-card"><input type="radio" name="prazo" value="1"><div class="rdot"></div><span>Atrasou com frequência</span></label>
-      </div>
-      <div class="nav">
-        <button class="btn-ghost" onclick="prev(2)">← Voltar</button>
-        <button class="btn-primary" onclick="next(2)">Próximo →</button>
-        <span class="step-counter">3 / 7</span>
-      </div>
-    </div>
+    <div class="steps-wrap">
 
-    <!-- STEP 3 — Atendimento -->
-    <div class="step" id="s3">
-      <div class="step-eyebrow">Etapa 4 de 7 · Atendimento e suporte</div>
-      <div class="step-title">Como foi o atendimento e a comunicação?</div>
-      <div class="step-hint">Rapidez no retorno, proatividade e clareza nas informações.</div>
-      <div class="sub-label">Nota de atendimento</div>
-      <div class="stars" id="st-atendimento"></div>
-      <hr class="divider">
-      <div class="sub-label">Quando houve problema, como foi a resolução?</div>
-      <div class="radio-list" id="rl-resolucao">
-        <label class="radio-card"><input type="radio" name="resolucao" value="5"><div class="rdot"></div><span>Resolveu rápido e com proatividade</span></label>
-        <label class="radio-card"><input type="radio" name="resolucao" value="3"><div class="rdot"></div><span>Resolveu, mas precisei pressionar</span></label>
-        <label class="radio-card"><input type="radio" name="resolucao" value="1"><div class="rdot"></div><span>Demorou muito ou não resolveu</span></label>
-        <label class="radio-card"><input type="radio" name="resolucao" value="4"><div class="rdot"></div><span>Não tivemos problemas no período</span></label>
-      </div>
-      <div class="nav">
-        <button class="btn-ghost" onclick="prev(3)">← Voltar</button>
-        <button class="btn-primary" onclick="next(3)">Próximo →</button>
-        <span class="step-counter">4 / 7</span>
-      </div>
-    </div>
-
-    <!-- STEP 4 — Custo -->
-    <div class="step" id="s4">
-      <div class="step-eyebrow">Etapa 5 de 7 · Custo-benefício</div>
-      <div class="step-title">O custo é compatível com o valor entregue?</div>
-      <div class="step-hint">Avalie a relação entre preço e qualidade percebida.</div>
-      <div class="sub-label">Nota de custo-benefício</div>
-      <div class="stars" id="st-custo"></div>
-      <hr class="divider">
-      <div class="sub-label">Existe transparência nas cobranças e nas notas fiscais?</div>
-      <div class="radio-list" id="rl-transp">
-        <label class="radio-card"><input type="radio" name="transp" value="5"><div class="rdot"></div><span>Sim, total transparência</span></label>
-        <label class="radio-card"><input type="radio" name="transp" value="3"><div class="rdot"></div><span>Na maioria das vezes sim</span></label>
-        <label class="radio-card"><input type="radio" name="transp" value="1"><div class="rdot"></div><span>Houve cobranças indevidas ou confusas</span></label>
-      </div>
-      <div class="nav">
-        <button class="btn-ghost" onclick="prev(4)">← Voltar</button>
-        <button class="btn-primary" onclick="next(4)">Próximo →</button>
-        <span class="step-counter">5 / 7</span>
-      </div>
-    </div>
-
-    <!-- STEP 5 — Compliance -->
-    <div class="step" id="s5">
-      <div class="step-eyebrow">Etapa 6 de 7 · Conformidade</div>
-      <div class="step-title">O fornecedor segue a política interna da empresa?</div>
-      <div class="step-hint">Verifique se ele respeita as regras de viagens e eventos estabelecidas.</div>
-      <div class="radio-list" id="rl-comp">
-        <label class="radio-card"><input type="radio" name="comp" value="5"><div class="rdot"></div><span>Sim, sempre respeita as regras</span></label>
-        <label class="radio-card"><input type="radio" name="comp" value="3"><div class="rdot"></div><span>Algumas vezes precisei reforçar</span></label>
-        <label class="radio-card"><input type="radio" name="comp" value="1"><div class="rdot"></div><span>Frequentemente fora da política</span></label>
-      </div>
-      <div class="nav">
-        <button class="btn-ghost" onclick="prev(5)">← Voltar</button>
-        <button class="btn-primary" onclick="next(5)">Próximo →</button>
-        <span class="step-counter">6 / 7</span>
-      </div>
-    </div>
-
-    <!-- STEP 6 — Comentários -->
-    <div class="step" id="s6">
-      <div class="step-eyebrow">Etapa 7 de 7 · Comentários</div>
-      <div class="step-title">Sua percepção final sobre este fornecedor</div>
-      <div class="step-hint">Esses comentários ajudam a orientar futuras negociações e decisões.</div>
-      <div class="field"><label>O que este fornecedor faz muito bem?</label><textarea id="f-bem" placeholder="Descreva os pontos fortes observados…"></textarea></div>
-      <div class="field"><label>O que este fornecedor precisa melhorar?</label><textarea id="f-melhorar" placeholder="Descreva os pontos de atenção ou melhoria…"></textarea></div>
-      <div class="field"><label>Você renovaria o contrato com este fornecedor?</label>
-        <select id="f-renovar">
-          <option value="">Selecione…</option>
-          <option value="Sim, sem ressalvas">Sim, sem ressalvas</option>
-          <option value="Sim, com ajustes">Sim, mas com ajustes no contrato</option>
-          <option value="Em avaliação">Ainda em avaliação</option>
-          <option value="Não">Não renovaria</option>
-        </select>
-      </div>
-      <div class="nav">
-        <button class="btn-ghost" onclick="prev(6)">← Voltar</button>
-        <button class="btn-primary" id="btn-enviar" onclick="enviar()">
-          Enviar avaliação <span class="spinner" id="spinner"></span>
-        </button>
-        <span class="step-counter">7 / 7</span>
-      </div>
-    </div>
-
-    <!-- RESULTADO -->
-    <div class="step" id="s-result">
-      <div class="result-header" id="res-header">
-        <h2>AVALIAÇÃO CONCLUÍDA</h2>
-        <div class="nps-circle"><span class="big" id="res-nps">—</span><span class="tiny">NPS</span></div>
-        <div class="zone-pill" id="res-zone">—</div>
-        <div class="result-fornecedor" id="res-fornecedor">—</div>
-      </div>
-      <div class="result-body">
-        <div class="success-banner" id="success-banner">
-          <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-          <span>Dados enviados para a planilha com sucesso!</span>
+      <!-- S0 -->
+      <div class="step active" id="s0">
+        <div class="step-eyebrow">Etapa 1 de 7</div>
+        <div class="step-title">Qual fornecedor você está avaliando?</div>
+        <div class="step-hint">Preencha o nome e selecione a categoria de serviço.</div>
+        <div class="field"><label>Nome do fornecedor *</label><input type="text" id="f-nome" placeholder="Ex: Hotel Tropical Manaus"></div>
+        <div class="field"><label>Categoria *</label>
+          <select id="f-cat">
+            <option value="">Selecione…</option>
+            <option>Hotéis e hospedagem</option>
+            <option>Companhias aéreas</option>
+            <option>Locadoras de veículos</option>
+            <option>Agência de viagens (TMC)</option>
+            <option>Buffet / alimentação</option>
+            <option>Espaço para eventos</option>
+            <option>Transporte terrestre</option>
+            <option>Tecnologia / sistemas</option>
+            <option>Outro</option>
+          </select>
         </div>
-        <div class="dim-section-title">Resultado por dimensão</div>
-        <div id="dims-result"></div>
-        <div class="comments-section" id="comments-section">
-          <div class="comment-block">
-            <div class="clabel">Pontos fortes</div>
-            <div class="ctext" id="res-bem">—</div>
-          </div>
-          <div class="comment-block">
-            <div class="clabel">Pontos de melhoria</div>
-            <div class="ctext" id="res-melhorar">—</div>
-          </div>
-          <div class="comment-block">
-            <div class="clabel">Renovação de contrato</div>
-            <div class="ctext" id="res-renovar">—</div>
-          </div>
-        </div>
-        <div class="nav" style="margin-top:1.5rem;">
-          <button class="btn-primary" onclick="reiniciar()">Nova avaliação</button>
+        <div class="field"><label>Seu nome / área (opcional)</label><input type="text" id="f-avaliador" placeholder="Ex: Micheli — RH Viagens"></div>
+        <div class="nav">
+          <button class="btn-primary" onclick="next(0)">Próximo →</button>
+          <span class="step-counter">1 / 7</span>
         </div>
       </div>
-    </div>
 
-  </div><!-- /steps-wrap -->
-</div><!-- /card -->
+      <!-- S1 NPS -->
+      <div class="step" id="s1">
+        <div class="step-eyebrow">Etapa 2 de 7</div>
+        <div class="step-title">Qual a chance de recomendar este fornecedor internamente?</div>
+        <div class="step-hint">0 = definitivamente não recomendaria &nbsp;·&nbsp; 10 = recomendaria com certeza</div>
+        <div class="nps-grid" id="nps-btns"></div>
+        <div class="nps-labels"><span>Não recomendaria</span><span>Recomendaria com certeza</span></div>
+        <div class="nav">
+          <button class="btn-ghost" onclick="prev(1)">← Voltar</button>
+          <button class="btn-primary" onclick="next(1)">Próximo →</button>
+          <span class="step-counter">2 / 7</span>
+        </div>
+      </div>
+
+      <!-- S2 Qualidade -->
+      <div class="step" id="s2">
+        <div class="step-eyebrow">Etapa 3 de 7 · Qualidade e entrega</div>
+        <div class="step-title">Como foi a qualidade do que foi entregue?</div>
+        <div class="step-hint">Avalie se o fornecedor cumpriu o que foi contratado.</div>
+        <div class="sub-label">Nota geral de qualidade</div>
+        <div class="stars-row" id="st-qualidade"></div>
+        <hr class="divider">
+        <div class="sub-label">O fornecedor cumpriu os prazos acordados?</div>
+        <div class="radio-list">
+          <label class="radio-card"><input type="radio" name="prazo" value="5"><div class="rdot"></div><span>Sempre cumpriu os prazos</span></label>
+          <label class="radio-card"><input type="radio" name="prazo" value="3"><div class="rdot"></div><span>Cumpriu na maioria das vezes</span></label>
+          <label class="radio-card"><input type="radio" name="prazo" value="1"><div class="rdot"></div><span>Atrasou com frequência</span></label>
+        </div>
+        <div class="nav">
+          <button class="btn-ghost" onclick="prev(2)">← Voltar</button>
+          <button class="btn-primary" onclick="next(2)">Próximo →</button>
+          <span class="step-counter">3 / 7</span>
+        </div>
+      </div>
+
+      <!-- S3 Atendimento -->
+      <div class="step" id="s3">
+        <div class="step-eyebrow">Etapa 4 de 7 · Atendimento e suporte</div>
+        <div class="step-title">Como foi o atendimento e a comunicação?</div>
+        <div class="step-hint">Rapidez no retorno, proatividade e clareza nas informações.</div>
+        <div class="sub-label">Nota de atendimento</div>
+        <div class="stars-row" id="st-atendimento"></div>
+        <hr class="divider">
+        <div class="sub-label">Quando houve problema, como foi a resolução?</div>
+        <div class="radio-list">
+          <label class="radio-card"><input type="radio" name="resolucao" value="5"><div class="rdot"></div><span>Resolveu rápido e com proatividade</span></label>
+          <label class="radio-card"><input type="radio" name="resolucao" value="3"><div class="rdot"></div><span>Resolveu, mas precisei pressionar</span></label>
+          <label class="radio-card"><input type="radio" name="resolucao" value="1"><div class="rdot"></div><span>Demorou muito ou não resolveu</span></label>
+          <label class="radio-card"><input type="radio" name="resolucao" value="4"><div class="rdot"></div><span>Não tivemos problemas no período</span></label>
+        </div>
+        <div class="nav">
+          <button class="btn-ghost" onclick="prev(3)">← Voltar</button>
+          <button class="btn-primary" onclick="next(3)">Próximo →</button>
+          <span class="step-counter">4 / 7</span>
+        </div>
+      </div>
+
+      <!-- S4 Custo -->
+      <div class="step" id="s4">
+        <div class="step-eyebrow">Etapa 5 de 7 · Custo-benefício</div>
+        <div class="step-title">O custo é compatível com o valor entregue?</div>
+        <div class="step-hint">Avalie a relação entre preço e qualidade percebida.</div>
+        <div class="sub-label">Nota de custo-benefício</div>
+        <div class="stars-row" id="st-custo"></div>
+        <hr class="divider">
+        <div class="sub-label">Existe transparência nas cobranças e nas notas fiscais?</div>
+        <div class="radio-list">
+          <label class="radio-card"><input type="radio" name="transp" value="5"><div class="rdot"></div><span>Sim, total transparência</span></label>
+          <label class="radio-card"><input type="radio" name="transp" value="3"><div class="rdot"></div><span>Na maioria das vezes sim</span></label>
+          <label class="radio-card"><input type="radio" name="transp" value="1"><div class="rdot"></div><span>Houve cobranças indevidas ou confusas</span></label>
+        </div>
+        <div class="nav">
+          <button class="btn-ghost" onclick="prev(4)">← Voltar</button>
+          <button class="btn-primary" onclick="next(4)">Próximo →</button>
+          <span class="step-counter">5 / 7</span>
+        </div>
+      </div>
+
+      <!-- S5 Compliance -->
+      <div class="step" id="s5">
+        <div class="step-eyebrow">Etapa 6 de 7 · Conformidade</div>
+        <div class="step-title">O fornecedor segue a política interna da Bemol?</div>
+        <div class="step-hint">Verifique se ele respeita as regras de viagens e eventos estabelecidas.</div>
+        <div class="radio-list">
+          <label class="radio-card"><input type="radio" name="comp" value="5"><div class="rdot"></div><span>Sim, sempre respeita as regras</span></label>
+          <label class="radio-card"><input type="radio" name="comp" value="3"><div class="rdot"></div><span>Algumas vezes precisei reforçar</span></label>
+          <label class="radio-card"><input type="radio" name="comp" value="1"><div class="rdot"></div><span>Frequentemente fora da política</span></label>
+        </div>
+        <div class="nav">
+          <button class="btn-ghost" onclick="prev(5)">← Voltar</button>
+          <button class="btn-primary" onclick="next(5)">Próximo →</button>
+          <span class="step-counter">6 / 7</span>
+        </div>
+      </div>
+
+      <!-- S6 Comentários -->
+      <div class="step" id="s6">
+        <div class="step-eyebrow">Etapa 7 de 7 · Comentários</div>
+        <div class="step-title">Sua percepção final sobre este fornecedor</div>
+        <div class="step-hint">Esses comentários orientam futuras negociações e decisões de renovação.</div>
+        <div class="field"><label>O que este fornecedor faz muito bem?</label><textarea id="f-bem" placeholder="Descreva os pontos fortes observados…"></textarea></div>
+        <div class="field"><label>O que este fornecedor precisa melhorar?</label><textarea id="f-melhorar" placeholder="Descreva os pontos de atenção…"></textarea></div>
+        <div class="field"><label>Você renovaria o contrato com este fornecedor?</label>
+          <select id="f-renovar">
+            <option value="">Selecione…</option>
+            <option value="Sim, sem ressalvas">Sim, sem ressalvas</option>
+            <option value="Sim, com ajustes">Sim, mas com ajustes no contrato</option>
+            <option value="Em avaliação">Ainda em avaliação</option>
+            <option value="Não">Não renovaria</option>
+          </select>
+        </div>
+        <div class="nav">
+          <button class="btn-ghost" onclick="prev(6)">← Voltar</button>
+          <button class="btn-primary" id="btn-enviar" onclick="enviar()">
+            Enviar avaliação <span class="spinner" id="spinner"></span>
+          </button>
+          <span class="step-counter">7 / 7</span>
+        </div>
+      </div>
+
+      <!-- RESULTADO -->
+      <div class="step" id="s-result">
+        <div class="result-band">
+          <h2>Avaliação Concluída · Bemol S/A</h2>
+          <div class="nps-circle"><span class="big" id="res-nps">—</span><span class="tiny">NPS</span></div>
+          <div class="zone-pill" id="res-zone">—</div>
+          <div class="result-fornecedor" id="res-fornecedor">—</div>
+        </div>
+        <div class="result-body">
+          <div class="success-banner" id="success-banner">
+            <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+            <span>Dados enviados para a planilha com sucesso!</span>
+          </div>
+          <div class="dim-title">Resultado por dimensão</div>
+          <div id="dims-result"></div>
+          <div class="comments-section" id="comments-section">
+            <div class="clabel">Pontos fortes</div><div class="ctext" id="res-bem">—</div>
+            <div class="clabel">Pontos de melhoria</div><div class="ctext" id="res-melhorar">—</div>
+            <div class="clabel">Renovação de contrato</div><div class="ctext" id="res-renovar">—</div>
+          </div>
+          <div class="nav" style="margin-top:1.5rem;">
+            <button class="btn-primary" onclick="reiniciar()">Nova avaliação</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="footer">Bemol S/A · Gestão de Fornecedores · Viagens &amp; Eventos Corporativos</div>
+</div>
 
 <script>
-/* ═══════════════════════════════════════════════
-   🔧 CONFIGURE AQUI — cole sua URL do Apps Script
-   ═══════════════════════════════════════════════ */
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzboSySDax4jM6aB9CKK_d8sJrvMD7WZBjrgnjLfxLibEzmRb7GmS-7BhjIGWU0COJxnw/exec';
 
-/* ═══════════════════════════════════════════════ */
-
 const STEPS = [
-  { label:'Identificação',       pct:'14%'  },
-  { label:'Recomendação NPS',    pct:'28%'  },
-  { label:'Qualidade e entrega', pct:'42%'  },
-  { label:'Atendimento',         pct:'57%'  },
-  { label:'Custo-benefício',     pct:'71%'  },
-  { label:'Conformidade',        pct:'85%'  },
-  { label:'Comentários',         pct:'100%' },
+  { label:'Identificação',       pct:'14%',  title:'Identificação do fornecedor',   step:'Etapa 1 de 7' },
+  { label:'Recomendação NPS',    pct:'28%',  title:'Recomendação NPS',              step:'Etapa 2 de 7' },
+  { label:'Qualidade e entrega', pct:'42%',  title:'Qualidade e entrega',           step:'Etapa 3 de 7' },
+  { label:'Atendimento',         pct:'57%',  title:'Atendimento e suporte',         step:'Etapa 4 de 7' },
+  { label:'Custo-benefício',     pct:'71%',  title:'Custo-benefício',               step:'Etapa 5 de 7' },
+  { label:'Conformidade',        pct:'85%',  title:'Conformidade e política',       step:'Etapa 6 de 7' },
+  { label:'Comentários',         pct:'100%', title:'Comentários finais',            step:'Etapa 7 de 7' },
 ];
 
-const state = {
-  nps: null,
-  qualidade: 0, atendimento: 0, custo: 0,
-  prazo: null, resolucao: null, transp: null, comp: null
-};
+const state = { nps:null, qualidade:0, atendimento:0, custo:0, prazo:null, resolucao:null, transp:null, comp:null };
 
-/* ── NPS ── */
-(function buildNPS() {
-  const c = document.getElementById('nps-btns');
-  for(let i=0;i<=10;i++){
-    const b = document.createElement('button');
-    b.className='nps-btn'; b.textContent=i;
-    b.onclick=()=>{
-      state.nps=i;
-      document.querySelectorAll('.nps-btn').forEach(x=>x.classList.remove('sel'));
-      b.classList.add('sel');
-    };
-    c.appendChild(b);
-  }
-})();
-
-/* ── Stars ── */
+// Stars
 function buildStars(id, key) {
   const c = document.getElementById(id);
   for(let i=1;i<=5;i++){
     const b = document.createElement('button');
-    b.className='star'; b.textContent='★'; b.dataset.v=i;
+    b.className='star-btn'; b.textContent='★'; b.dataset.v=i;
     b.onclick=()=>{ state[key]=i; refreshStars(id,key); };
     b.onmouseover=()=>highlight(id,i);
     b.onmouseout=()=>refreshStars(id,key);
     c.appendChild(b);
   }
 }
-function highlight(id,val){
-  document.querySelectorAll('#'+id+' .star').forEach((b,i)=>b.classList.toggle('lit',i<val));
-}
+function highlight(id,val){ document.querySelectorAll('#'+id+' .star-btn').forEach((b,i)=>b.classList.toggle('lit',i<val)); }
 function refreshStars(id,key){ highlight(id,state[key]); }
+
+// NPS
+(function(){
+  const c=document.getElementById('nps-btns');
+  for(let i=0;i<=10;i++){
+    const b=document.createElement('button');
+    b.className='nps-btn'; b.textContent=i;
+    b.onclick=()=>{ state.nps=i; document.querySelectorAll('.nps-btn').forEach(x=>x.classList.remove('sel')); b.classList.add('sel'); };
+    c.appendChild(b);
+  }
+})();
 
 buildStars('st-qualidade','qualidade');
 buildStars('st-atendimento','atendimento');
 buildStars('st-custo','custo');
 
-/* ── Radio cards ── */
-function setupRadios(name, key) {
+// Radios
+['prazo','resolucao','transp','comp'].forEach(name=>{
   document.querySelectorAll(`[name="${name}"]`).forEach(inp=>{
-    const card = inp.closest('.radio-card');
+    const card=inp.closest('.radio-card');
     card.onclick=()=>{
-      state[key]=parseInt(inp.value);
+      state[name]=parseInt(inp.value);
       document.querySelectorAll(`[name="${name}"]`).forEach(x=>x.closest('.radio-card').classList.remove('sel'));
       card.classList.add('sel');
     };
   });
-}
-setupRadios('prazo','prazo');
-setupRadios('resolucao','resolucao');
-setupRadios('transp','transp');
-setupRadios('comp','comp');
+});
 
-/* ── Navigation ── */
-let current = 0;
+// Stars background
+(function(){
+  const c=document.getElementById('stars-bg');
+  for(let i=0;i<120;i++){
+    const s=document.createElement('div');
+    const sz=Math.random()*2+.5;
+    s.className='star';
+    s.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--d:${2+Math.random()*4}s;animation-delay:${Math.random()*4}s`;
+    c.appendChild(s);
+  }
+})();
 
-function goTo(n) {
+// Navigation
+function goTo(n){
   document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
-  const target = n === 'result' ? document.getElementById('s-result') : document.getElementById('s'+n);
-  target.classList.add('active');
-  if(n !== 'result'){
-    current = n;
-    document.getElementById('prog-label').textContent = STEPS[n].label;
-    document.getElementById('prog-pct').textContent   = STEPS[n].pct;
-    document.getElementById('prog-fill').style.width  = STEPS[n].pct;
+  const el = n==='result'?document.getElementById('s-result'):document.getElementById('s'+n);
+  el.classList.add('active');
+  if(n!=='result'){
+    const s=STEPS[n];
+    document.getElementById('prog-fill').style.width=s.pct;
+    document.getElementById('prog-label').textContent=s.label;
+    document.getElementById('prog-pct').textContent=s.pct;
+    document.getElementById('band-step').textContent=s.step;
+    document.getElementById('band-title').textContent=s.title;
+  } else {
+    document.getElementById('prog-fill').style.width='100%';
+    document.getElementById('prog-label').textContent='Concluído';
+    document.getElementById('prog-pct').textContent='100%';
+    document.getElementById('band-step').textContent='Avaliação finalizada';
+    document.getElementById('band-title').textContent='Obrigada pela sua avaliação!';
   }
   window.scrollTo(0,0);
 }
 
-function next(from) {
-  if(from===0 && (!document.getElementById('f-nome').value.trim() || !document.getElementById('f-cat').value)) {
-    alert('Preencha o nome e a categoria do fornecedor para continuar.'); return;
+function next(from){
+  if(from===0&&(!document.getElementById('f-nome').value.trim()||!document.getElementById('f-cat').value)){
+    alert('Preencha o nome e a categoria do fornecedor.'); return;
   }
-  if(from===1 && state.nps===null) {
-    alert('Selecione uma nota de 0 a 10 para continuar.'); return;
-  }
+  if(from===1&&state.nps===null){ alert('Selecione uma nota de 0 a 10.'); return; }
   goTo(from+1);
 }
-function prev(from) { goTo(from-1); }
+function prev(from){ goTo(from-1); }
 
-/* ── Score helpers ── */
-function starPct(v){ return v ? Math.round((v/5)*100) : 0; }
-function radioPct(v){ return v ? Math.round((v/5)*100) : 0; }
-function barColor(v){ return v>=70?'#1D9E75': v>=40?'#EF9F27':'#E24B4A'; }
+function starPct(v){ return v?Math.round((v/5)*100):0; }
+function radioPct(v){ return v?Math.round((v/5)*100):0; }
+function barColor(v){ return v>=70?'#1D9E75':v>=40?'#EF9F27':'#E24B4A'; }
 
-/* ── Enviar ── */
-async function enviar() {
-  const btn = document.getElementById('btn-enviar');
-  const sp  = document.getElementById('spinner');
+async function enviar(){
+  const btn=document.getElementById('btn-enviar');
+  const sp=document.getElementById('spinner');
   btn.disabled=true; sp.style.display='inline-block';
 
-  const payload = {
-    data:        new Date().toLocaleString('pt-BR'),
-    fornecedor:  document.getElementById('f-nome').value,
-    categoria:   document.getElementById('f-cat').value,
-    avaliador:   document.getElementById('f-avaliador').value || '—',
-    nps:         state.nps,
-    qualidade:   state.qualidade,
-    atendimento: state.atendimento,
-    custo:       state.custo,
-    prazo:       state.prazo,
-    resolucao:   state.resolucao,
-    transparencia: state.transp,
-    compliance:  state.comp,
-    pontos_fortes:   document.getElementById('f-bem').value || '—',
-    pontos_melhoria: document.getElementById('f-melhorar').value || '—',
-    renovacao:       document.getElementById('f-renovar').value || '—',
+  const payload={
+    data: new Date().toLocaleString('pt-BR'),
+    fornecedor: document.getElementById('f-nome').value,
+    categoria:  document.getElementById('f-cat').value,
+    avaliador:  document.getElementById('f-avaliador').value||'—',
+    nps: state.nps,
+    qualidade: state.qualidade, atendimento: state.atendimento, custo: state.custo,
+    prazo: state.prazo, resolucao: state.resolucao, transparencia: state.transp, compliance: state.comp,
+    pontos_fortes:   document.getElementById('f-bem').value||'—',
+    pontos_melhoria: document.getElementById('f-melhorar').value||'—',
+    renovacao:       document.getElementById('f-renovar').value||'—',
   };
 
   mostrarResultado(payload);
 
   try {
-    if(SCRIPT_URL && SCRIPT_URL !== 'https://script.google.com/macros/s/AKfycbyCF4tTgZYjv-t3W9eiLbMuZr3Xu2AWhnZJ3fYERn626B6Y46-qEgBejm1g76TGTlIMbA/exec'){
-      await fetch(SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      document.getElementById('success-banner').style.display = 'flex';
+    if(SCRIPT_URL&&!SCRIPT_URL.includes('COLE_AQUI')){
+      await fetch(SCRIPT_URL,{ method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
+      document.getElementById('success-banner').style.display='flex';
     }
-  } catch(e) {
-    console.warn('Envio falhou:', e);
-  }
-
+  } catch(e){ console.warn(e); }
   btn.disabled=false; sp.style.display='none';
 }
 
-function mostrarResultado(d) {
-  const nps = d.nps;
-  let zone = nps>=9?'Promotor': nps>=7?'Neutro':'Detrator';
-  let bgColor = nps>=9?'#1D9E75': nps>=7?'#EF9F27':'#E24B4A';
+function mostrarResultado(d){
+  const nps=d.nps;
+  const zone=nps>=9?'Promotor':nps>=7?'Neutro':'Detrator';
+  document.getElementById('res-nps').textContent=nps;
+  document.getElementById('res-zone').textContent=zone;
+  document.getElementById('res-fornecedor').textContent=d.fornecedor+(d.categoria?' · '+d.categoria:'');
 
-  document.getElementById('res-nps').textContent = nps;
-  document.getElementById('res-header').style.background = bgColor;
-  document.getElementById('res-zone').textContent = zone;
-  document.getElementById('res-fornecedor').textContent = d.fornecedor + (d.categoria?' · '+d.categoria:'');
-
-  const dims = [
-    { name:'Qualidade do serviço',     val: starPct(d.qualidade)  },
-    { name:'Cumprimento de prazos',    val: radioPct(d.prazo)     },
-    { name:'Atendimento e suporte',    val: starPct(d.atendimento)},
-    { name:'Resolução de problemas',   val: radioPct(d.resolucao) },
-    { name:'Custo-benefício',          val: starPct(d.custo)      },
-    { name:'Transparência financeira', val: radioPct(d.transparencia)},
-    { name:'Conformidade / política',  val: radioPct(d.compliance)},
+  const dims=[
+    {name:'Qualidade do serviço',     val:starPct(d.qualidade)},
+    {name:'Cumprimento de prazos',    val:radioPct(d.prazo)},
+    {name:'Atendimento e suporte',    val:starPct(d.atendimento)},
+    {name:'Resolução de problemas',   val:radioPct(d.resolucao)},
+    {name:'Custo-benefício',          val:starPct(d.custo)},
+    {name:'Transparência financeira', val:radioPct(d.transparencia)},
+    {name:'Conformidade / política',  val:radioPct(d.compliance)},
   ];
 
-  const dc = document.getElementById('dims-result');
-  dc.innerHTML = dims.map(d=>{
-    const c = barColor(d.val);
-    return `<div class="dim-row">
-      <span class="dim-name">${d.name}</span>
-      <div class="dim-track"><div class="dim-bar" style="width:${d.val}%;background:${c}"></div></div>
-      <span class="dim-val" style="color:${c}">${d.val}</span>
-    </div>`;
+  document.getElementById('dims-result').innerHTML=dims.map(d=>{
+    const c=barColor(d.val);
+    return `<div class="dim-row"><span class="dim-name">${d.name}</span><div class="dim-track"><div class="dim-bar" style="width:${d.val}%;background:${c}"></div></div><span class="dim-val" style="color:${c}">${d.val}</span></div>`;
   }).join('');
 
-  if(d.pontos_fortes!=='—'||d.pontos_melhoria!=='—'||d.renovacao!=='—'){
+  const bem=d.pontos_fortes, mel=d.pontos_melhoria, ren=d.renovacao;
+  if(bem!=='—'||mel!=='—'||ren!=='—'){
     document.getElementById('comments-section').style.display='block';
-    document.getElementById('res-bem').textContent      = d.pontos_fortes;
-    document.getElementById('res-melhorar').textContent = d.pontos_melhoria;
-    document.getElementById('res-renovar').textContent  = d.renovacao;
+    document.getElementById('res-bem').textContent=bem;
+    document.getElementById('res-melhorar').textContent=mel;
+    document.getElementById('res-renovar').textContent=ren;
   }
-
-  document.getElementById('prog-label').textContent = 'Avaliação concluída';
-  document.getElementById('prog-pct').textContent   = '100%';
-  document.getElementById('prog-fill').style.width  = '100%';
-
   goTo('result');
 }
 
 function reiniciar(){
-  state.nps=null; state.qualidade=0; state.atendimento=0; state.custo=0;
-  state.prazo=null; state.resolucao=null; state.transp=null; state.comp=null;
+  Object.keys(state).forEach(k=>state[k]=k==='nps'?null:0);
   ['f-nome','f-avaliador','f-bem','f-melhorar'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('f-cat').value='';
   document.getElementById('f-renovar').value='';
